@@ -1,6 +1,4 @@
 <?php
-use Modules\Downloads\Controllers\DownloadsController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,21 +11,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Publicly accessible route to view downloads
-Route::get('/downloads', [DownloadsController::class, 'index'])->name('downloads.index');
+Route::prefix('admin/downloads')->group(function () {
+    Route::get('/', 'DownloadsController@index')->name('downloads.index');
+    Route::get('create', 'DownloadsController@create')->name('downloads.create');
+    Route::post('store', 'DownloadsController@store')->name('downloads.store');
+    Route::get('download/{id}', 'DownloadsController@download')->name('downloads.download');
+    Route::get('edit/{id}', 'DownloadsController@edit')->name('downloads.edit');
+    Route::put('update/{id}', 'DownloadsController@update')->name('downloads.update');
+    Route::delete('destroy/{id}', 'DownloadsController@destroy')->name('downloads.destroy');
+});
 
-// Routes under the 'downloads' prefix
-Route::prefix('downloads')->group(function () {
+Route::prefix('client')->group(function() {
+    Route::get('downloads', 'ClientDownloadsController@index')->name('client.downloads');
+    Route::get('downloads/{id}/download', 'ClientDownloadsController@download')->name('downloads.client.download');
+});
 
-    // Form to create a new download
-    Route::get('/create', [DownloadsController::class, 'create'])->name('downloads.create');
-
-    // Store a new download
-    Route::post('/', [DownloadsController::class, 'store'])->name('downloads.store');
-
-    // Download route
-    Route::get('/{id}/download', [DownloadsController::class, 'download'])->name('downloads.download');
-
-
-
-})->middleware(['web', 'auth']);
+    
