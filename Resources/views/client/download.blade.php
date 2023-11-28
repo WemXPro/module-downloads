@@ -52,6 +52,9 @@
                 </div>
             @endforeach
         @endif
+        <div class="card-footer text-right">
+            {{ $downloads->links(Theme::pagination()) }}
+        </div>
     </section>
 
 
