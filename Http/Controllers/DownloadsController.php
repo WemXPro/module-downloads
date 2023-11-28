@@ -34,17 +34,8 @@ class DownloadsController extends Controller
         $fileName = time() . '_' . $file->getClientOriginalExtension();
         $modulePath = base_path('Modules/Downloads/');
         $customPath = 'Database/Downloadfile';
-        
-        // Store the file in the custom path
         $file->storeAs($customPath, $fileName, 'public');
-    
-        // Determine if allow_guest is checked
-        
-    
-        // Use the storeAs method with the desired path
-        $file->storeAs($customPath, $fileName, 'public');
-    
-        $packages = implode(',', $request->input('package'));
+
         
        
         $download = new Download;

@@ -46,7 +46,7 @@
                                     <select name="package[]" id="package"
                                         class="form-control select2 select2-hidden-accessible" multiple="" tabindex="-1"
                                         aria-hidden="true">
-                                        @foreach(Package::get() as $package)
+                                        @foreach (Package::get() as $package)
                                             <option value="{{ $package->id }}">{{ $package->name }}</option>
                                         @endforeach
 

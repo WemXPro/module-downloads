@@ -8,7 +8,8 @@
                     <div class="card-header">
                         <h4>{{ __('Downloads') }}</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('downloads.create') }}" class="btn btn-icon icon-left btn-primary">{{ __('Add New Downloads') }}</a>
+                            <a href="{{ route('downloads.create') }}"
+                                class="btn btn-icon icon-left btn-primary">{{ __('Add New Downloads') }}</a>
                         </div>
                     </div>
 

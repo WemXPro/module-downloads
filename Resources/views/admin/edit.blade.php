@@ -39,8 +39,9 @@
                                 <select name="package[]" id="package"
                                     class="form-control select2 select2-hidden-accessible" multiple="" tabindex="-1"
                                     aria-hidden="true">
-                                    @foreach(Package::get() as $package)
-                                        <option value="{{ $package->id }}" @if(in_array($package->id, $download->package)) selected @endif>{{ $package->name }}</option>
+                                    @foreach (Package::get() as $package)
+                                        <option value="{{ $package->id }}"
+                                            @if (in_array($package->id, $download->package)) selected @endif>{{ $package->name }}</option>
                                     @endforeach
                                 </select>
                                 <small class="form-text text-muted"></small>
