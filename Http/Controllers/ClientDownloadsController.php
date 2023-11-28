@@ -11,14 +11,14 @@ class ClientDownloadsController extends Controller
 {
     public function index()
     {
-        $downloads = Download::all();
-        return view('downloads::client.downloads', compact('downloads'));
+        $downloads = Download::paginate(15);
+        return view('downloads::client.download', compact('downloads'));
     }
 
     public function download($id)
     {
         $download = Download::findOrFail($id);
-        $filePath = storage_path('app/public/downloads/' . $download->file_path);
+        $filePath = storage_path('app/public/Database/Downloadfile/' . $download->file_path);
 
         return response()->download($filePath, $download->name);
     }

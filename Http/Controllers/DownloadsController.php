@@ -24,31 +24,52 @@ class DownloadsController extends Controller
     {
         $request->validate([
             'description' => 'required',
-            'package' => 'required|array',
+            'package' => 'required',
             'name' => 'required',
-            'allow_guest' => 'boolean',
-            'file' => 'required|file|mimes:zip|max:2048',
+            'allow_guest' => '',
+            'file' => 'required|file|mimes:zip',
         ]);
-
+    
         $file = $request->file('file');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('downloads', $fileName, 'public');
+        $fileName = time() . '_' . $file->getClientOriginalExtension();
+        
+        // Get the base path of the module
+        $modulePath = base_path('Modules/Downloads/');
+        
+        // Define the custom path within the module
+        $customPath = 'Database/Downloadfile';
+        
+        // Store the file in the custom path
+        $file->storeAs($customPath, $fileName, 'public');
+    
+        // Determine if allow_guest is checked
+        
+    
+        // Use the storeAs method with the desired path
+        $file->storeAs($customPath, $fileName, 'public');
+    
+        $packages = implode(',', $request->input('package'));
+        
+       
+        $download = new Download;
+        $download->description = $request->description;
+        $download->package = $packages;
+        $download->name = $request->name;
+        $download->allow_guest = $request->allow_guest;
+        $download->file_path = $fileName;
+        $download->save();
 
-        $download = Download::create([
-            'description' => $request->input('description'),
-            'package' => $request->input('package'),
-            'name' => $request->input('name'),
-            'allow_guest' => $request->input('allow_guest', false),
-            'file_path' => $fileName,
-        ]);
-
+    
         return redirect()->route('downloads.index')->with('success', 'Download created successfully.');
     }
+    
+    
+    
 
     public function download($id)
     {
         $download = Download::findOrFail($id);
-        $filePath = storage_path('app/public/downloads/' . $download->file_path);
+        $filePath = storage_path('app/public/Database/Downloadfile/' . $download->file_path);
 
         return response()->download($filePath, $download->name);
     }
@@ -62,29 +83,32 @@ class DownloadsController extends Controller
     public function update(Request $request, $id)
     {
         $download = Download::findOrFail($id);
-
+    
         $request->validate([
             'description' => 'required',
-            'package' => 'required|array',
+            'package' => 'required',
             'name' => 'required',
-            'allow_guest' => 'boolean',
+            'allow_guest' => '', // Make sure 'allow_guest' is treated as a boolean
             'file' => 'file|mimes:zip|max:2048',
         ]);
-
+    
         if ($request->hasFile('file')) {
             $this->updateFile($request, $download);
         }
-
-        $download->update([
-            'description' => $request->input('description'),
-            'package' => $request->input('package'),
-            'name' => $request->input('name'),
-            'allow_guest' => $request->input('allow_guest', false),
-        ]);
-
+    
+       
+        // Use boolean() method to cast 'allow_guest' to boolean
+        $packages = implode(',', $request->input('package'));
+    
+        $download->description = $request->description;
+        $download->package = $packages;
+        $download->name = $request->name;
+        $download->allow_guest = $request->allow_guest;
+    
+        $download->save();
+    
         return redirect()->route('downloads.index')->with('success', 'Download updated successfully.');
     }
-
     public function destroy($id)
     {
         $download = Download::findOrFail($id);
@@ -98,8 +122,15 @@ class DownloadsController extends Controller
     {
         $file = $request->file('file');
         $fileName = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('downloads', $fileName, 'public');
-        Storage::delete('downloads/' . $download->file_path);
-        $download->update(['file_path' => $fileName]);
+        
+        $modulePath = base_path('Modules/Downloads/');
+        
+        $customPath = 'Database/Downloadfile';
+        
+        $file->storeAs($customPath, $fileName, 'public');
+    
+        Storage::disk('public')->delete($customPath . '/' . $download->file_path);
+    
+        $download->file_path = $fileName;
     }
 }

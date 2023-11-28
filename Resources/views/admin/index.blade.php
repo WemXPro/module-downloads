@@ -6,32 +6,51 @@
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>{{ __('Downloads') }}</h4>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4>{{ __('Downloads') }}</h4>
+
+                        </div>
+                        <div class="offset-9">
+                            <a href="{{ route('downloads.create') }}" class="btn btn-primary"
+                                style="border-radius: 0%">{{ __('Add New Downloads') }}</a>
+                        </div>
                     </div>
+
+
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-striped table-md">
                                 <tbody>
                                     <tr>
-                                        <th>{!! __('Download Name') !!}</th>
-                                        <th>{!! __('Description') !!}</th>
-                                        <th>{!! __('Required Package') !!}</th>
-                                        <th>{!! __('Allow Guest') !!}</th>
-                                        <th>{!! __('Actions') !!}</th>
+                                        <th class="text-center">{!! __('Downloads Name') !!}</th>
+                                        <th class="text-center">{!! __('Description') !!}</th>
+                                        <th class="text-center">{!! __('Required Package') !!}</th>
+                                        <th class="text-center">{!! __('File') !!}</th>
+                                        <th class="text-center">{!! __('Allow Guest') !!}</th>
+                                        <th class="text-center">{!! __('Actions') !!}</th>
                                     </tr>
 
                                     @foreach ($downloads as $download)
                                         <tr>
-                                            <td>{{ $download->name }}</td>
-                                            <td>{{ $download->description }}</td>
-                                            <td>{{ implode(', ', $download->package) }}</td>
-                                            <td>
-                                                <span class="{{ $download->allow_guest ? 'text-success' : 'text-danger' }}">
-                                                    {{ $download->allow_guest ? 'Yes' : 'No' }}
-                                                </span>
+                                            <td class="text-center">{{ $download->name }}</td>
+                                            <td class="text-center">{{ $download->description }}</td>
+                                            <td class="text-center">{{ $download->package }}</td>
+                                            <td class="text-center">
+                                                <a href="{{ route('downloads.download', $download->id) }}">
+                                                    <i class="fas fa-file-archive"></i> Download ZIP
+                                                </a>
                                             </td>
 
-                                            <td>
+                                            <td class="text-center">
+                                                @if ($download->allow_guest)
+                                                    <span class="badge badge-success">Yes</span>
+                                                @else
+                                                    <span class="badge badge-danger">No</span>
+                                                @endif
+                                            </td>
+
+
+                                            <td class="text-center">
                                                 <a href="{{ route('downloads.download', $download->id) }}"
                                                     class="btn btn-primary mr-2" title="{!! __('Download') !!}">
                                                     <i class="fas fa-download"></i>

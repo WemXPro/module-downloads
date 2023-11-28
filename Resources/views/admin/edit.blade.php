@@ -1,5 +1,13 @@
 @extends(AdminTheme::wrapper(), ['title' => __('Edit Download'), 'keywords' => 'WemX Dashboard, WemX Panel'])
+@section('css_libraries')
+    <link rel="stylesheet" href="{{ asset(AdminTheme::assets('modules/summernote/summernote-bs4.css')) }}" />
+    <link rel="stylesheet" href="{{ asset(AdminTheme::assets('modules/select2/dist/css/select2.min.css')) }}">
+@endsection
 
+@section('js_libraries')
+    <script src="{{ asset(AdminTheme::assets('modules/summernote/summernote-bs4.js')) }}"></script>
+    <script src="{{ asset(AdminTheme::assets('modules/select2/dist/js/select2.full.min.js')) }}"></script>
+@endsection
 @section('container')
     <section class="section">
         <div class="section-body">
@@ -28,9 +36,26 @@
 
                             <div class="form-group">
                                 <label for="package">{{ __('Required Package') }}</label>
-                                <input type="text" name="package" id="package" class="form-control"
-                                    value="{{ implode(', ', $download->package) }}" required>
+                                <select name="package[]" id="package"
+                                    class="form-control select2 select2-hidden-accessible" multiple="" tabindex="-1"
+                                    aria-hidden="true">
+                                    <option value="package1"
+                                        {{ in_array('package1', explode(',', $download->package)) ? 'selected' : '' }}>
+                                        Package 1</option>
+                                    <option value="package2"
+                                        {{ in_array('package2', explode(',', $download->package)) ? 'selected' : '' }}>
+                                        Package 2</option>
+                                    <option value="package3"
+                                        {{ in_array('package3', explode(',', $download->package)) ? 'selected' : '' }}>
+                                        Package 3</option>
+                                    <option value="package4"
+                                        {{ in_array('package4', explode(',', $download->package)) ? 'selected' : '' }}>
+                                        Package 4</option>
+                                </select>
+                                <small class="form-text text-muted"></small>
                             </div>
+
+
 
                             <div class="form-group">
                                 <label for="allow_guest">{{ __('Allow Guest') }}</label>
@@ -45,9 +70,12 @@
                                 <input type="file" name="file" id="file" class="form-control-file">
                             </div>
 
-                            <!-- Add more fields as needed -->
 
-                            <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
+                            <div class="col-md-12">
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

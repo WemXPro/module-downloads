@@ -16,50 +16,94 @@
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Create Downloads</h4>
+                        <h4>{{ __('Create Download') }}</h4>
+
                     </div>
                     <div class="card-body">
                         <form action="{{ route('downloads.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
 
-                            <div class="row">
-                                <div class="form-group col-6">
-                                    <label for="name">Name:</label>
-                                    <input type="text" class="form-control" name="name" id="name" required>
-                                    <small class="form-text text-muted">Downloads name</small>
-                                </div>
 
-                                <div class="form-group col-6">
-                                    <label for="description">Description:</label>
-                                    <textarea class="form-control" name="description" required></textarea>
-                                </div>
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" name="name" id="name"
+                                    value="{{ old('name') }}" required>
+                                <small class="form-text text-muted">Downloads name</small>
+                            </div>
 
-                                <div class="form-group col-6">
-                                    <label for="package">Required Package:</label>
-                                    <input type="text" class="form-control" name="package[]" placeholder="Package 1"
-                                        required>
-                                    <input type="text" class="form-control" name="package[]" placeholder="Package 2">
-                                    <!-- Add more package inputs if needed -->
-                                </div>
 
-                                <div class="form-group col-6">
-                                    <label for="allow_guest">Allow Guest:</label>
-                                    <input class="form-control" type="checkbox" name="allow_guest">
-                                </div>
 
-                                <div class="form-group col-6">
-                                    <label for="file">File (ZIP only):</label>
-                                    <input class="form-control" type="file" name="file" accept=".zip" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <textarea class="form-control" name="description" required>{{ old('description') }}</textarea>
+                                <small class="form-text text-muted">Description about downloads</small>
+                            </div>
 
-                                <div class="card-footer text-right">
+
+                            <div class="form-group">
+                                <label for="package">Required Package</label>
+                                <div class="input-group mb-2">
+                                    <select name="package[]" id="package"
+                                        class="form-control select2 select2-hidden-accessible" multiple="" tabindex="-1"
+                                        aria-hidden="true">
+                                        <option value="package1">Package 1</option>
+                                        <option value="package2">Package 2</option>
+                                        <option value="package3">Package 3</option>
+                                        <option value="package4">Package 4</option>
+
+                                    </select>
+                                    <small class="form-text text-muted"></small>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="form-group">
+                                <label for="file">File</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="file" name="file"
+                                        accept=".zip">
+                                    <label class="custom-file-label" for="file">Choose file</label>
+                                    <small class="form-text text-muted">Only Zip File</small>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="allow_guest">Allow Guest</label>
+                                <select name="allow_guest" id="allow_guest" class="form-control" required>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+
+                            </div>
+
+
+
+
+                            <div class="col-md-12">
+                                <div class="text-right">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
+
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
     </section>
+@endsection
+@section('css_libraries')
+    <link rel="stylesheet" href="{{ asset(AdminTheme::assets('modules/summernote/summernote-bs4.css')) }}" />
+    <link rel="stylesheet" href="{{ asset(AdminTheme::assets('modules/select2/dist/css/select2.min.css')) }}">
+@endsection
+
+@section('js_libraries')
+    <script src="{{ asset(AdminTheme::assets('modules/summernote/summernote-bs4.js')) }}"></script>
+    <script src="{{ asset(AdminTheme::assets('modules/select2/dist/js/select2.full.min.js')) }}"></script>
 @endsection

@@ -10,6 +10,16 @@ return [
 
     'elements' => [
 
+        'main_menu' =>
+        [
+            [
+                'name' => 'Downloads',
+                'icon' => '<i class="bx bxs-cloud-download"></i>',
+                'href' => 'client/downloads',
+                'style' => '',
+            ],
+            // ... add more menu items
+        ],
         'user_dropdown' =>
         [
             [
