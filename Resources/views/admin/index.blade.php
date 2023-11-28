@@ -6,13 +6,9 @@
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4>{{ __('Downloads') }}</h4>
-
-                        </div>
-                        <div class="offset-9">
-                            <a href="{{ route('downloads.create') }}" class="btn btn-primary"
-                                style="border-radius: 0%">{{ __('Add New Downloads') }}</a>
+                        <h4>{{ __('Downloads') }}</h4>
+                        <div class="card-header-action">
+                            <a href="{{ route('downloads.create') }}" class="btn btn-icon icon-left btn-primary">{{ __('Add New Downloads') }}</a>
                         </div>
                     </div>
 
@@ -24,7 +20,6 @@
                                     <tr>
                                         <th class="text-center">{!! __('Downloads Name') !!}</th>
                                         <th class="text-center">{!! __('Description') !!}</th>
-                                        <th class="text-center">{!! __('Required Package') !!}</th>
                                         <th class="text-center">{!! __('File') !!}</th>
                                         <th class="text-center">{!! __('Allow Guest') !!}</th>
                                         <th class="text-center">{!! __('Actions') !!}</th>
@@ -34,7 +29,6 @@
                                         <tr>
                                             <td class="text-center">{{ $download->name }}</td>
                                             <td class="text-center">{{ $download->description }}</td>
-                                            <td class="text-center">{{ $download->package }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('downloads.download', $download->id) }}">
                                                     <i class="fas fa-file-archive"></i> Download ZIP

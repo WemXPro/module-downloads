@@ -39,18 +39,9 @@
                                 <select name="package[]" id="package"
                                     class="form-control select2 select2-hidden-accessible" multiple="" tabindex="-1"
                                     aria-hidden="true">
-                                    <option value="package1"
-                                        {{ in_array('package1', explode(',', $download->package)) ? 'selected' : '' }}>
-                                        Package 1</option>
-                                    <option value="package2"
-                                        {{ in_array('package2', explode(',', $download->package)) ? 'selected' : '' }}>
-                                        Package 2</option>
-                                    <option value="package3"
-                                        {{ in_array('package3', explode(',', $download->package)) ? 'selected' : '' }}>
-                                        Package 3</option>
-                                    <option value="package4"
-                                        {{ in_array('package4', explode(',', $download->package)) ? 'selected' : '' }}>
-                                        Package 4</option>
+                                    @foreach(Package::get() as $package)
+                                        <option value="{{ $package->id }}" @if(in_array($package->id, $download->package)) selected @endif>{{ $package->name }}</option>
+                                    @endforeach
                                 </select>
                                 <small class="form-text text-muted"></small>
                             </div>
@@ -68,6 +59,7 @@
                             <div class="form-group">
                                 <label for="file">{{ __('File') }}</label>
                                 <input type="file" name="file" id="file" class="form-control-file">
+                                <small class="form-text text-muted">Please upload a ZIP file</small>
                             </div>
 
 

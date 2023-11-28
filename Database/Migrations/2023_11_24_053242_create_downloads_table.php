@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('downloads', function (Blueprint $table) {
             $table->id();
             $table->text('description');
-            $table->string('package');
+            $table->json('package');
             $table->string('name');
             $table->boolean('allow_guest')->default(false);
             $table->string('file_path');

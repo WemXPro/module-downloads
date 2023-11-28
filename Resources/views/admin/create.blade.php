@@ -25,7 +25,7 @@
 
 
                             <div class="form-group">
-                                <label for="name">Name:</label>
+                                <label for="name">Name</label>
                                 <input type="text" class="form-control" name="name" id="name"
                                     value="{{ old('name') }}" required>
                                 <small class="form-text text-muted">Downloads name</small>
@@ -34,7 +34,7 @@
 
 
                             <div class="form-group">
-                                <label for="description">Description:</label>
+                                <label for="description">Description</label>
                                 <textarea class="form-control" name="description" required>{{ old('description') }}</textarea>
                                 <small class="form-text text-muted">Description about downloads</small>
                             </div>
@@ -46,19 +46,14 @@
                                     <select name="package[]" id="package"
                                         class="form-control select2 select2-hidden-accessible" multiple="" tabindex="-1"
                                         aria-hidden="true">
-                                        <option value="package1">Package 1</option>
-                                        <option value="package2">Package 2</option>
-                                        <option value="package3">Package 3</option>
-                                        <option value="package4">Package 4</option>
+                                        @foreach(Package::get() as $package)
+                                            <option value="{{ $package->id }}">{{ $package->name }}</option>
+                                        @endforeach
 
                                     </select>
                                     <small class="form-text text-muted"></small>
                                 </div>
                             </div>
-
-
-
-
 
                             <div class="form-group">
                                 <label for="file">File</label>
@@ -66,8 +61,7 @@
                                     <input type="file" class="custom-file-input" id="file" name="file"
                                         accept=".zip">
                                     <label class="custom-file-label" for="file">Choose file</label>
-                                    <small class="form-text text-muted">Only Zip File</small>
-
+                                    <small class="form-text text-muted">Please upload a ZIP file</small>
                                 </div>
                             </div>
 

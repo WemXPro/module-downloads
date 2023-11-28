@@ -24,9 +24,9 @@ class DownloadsController extends Controller
     {
         $request->validate([
             'description' => 'required',
-            'package' => 'required',
+            'package' => 'nullable',
             'name' => 'required',
-            'allow_guest' => '',
+            'allow_guest' => 'boolean',
             'file' => 'required|file|mimes:zip',
         ]);
     
@@ -40,22 +40,16 @@ class DownloadsController extends Controller
         $customPath = 'Database/Downloadfile';
         
         // Store the file in the custom path
-        $file->storeAs($customPath, $fileName, 'public');
-    
-        // Determine if allow_guest is checked
-        
+        $file->storeAs($customPath, $fileName, 'public');        
     
         // Use the storeAs method with the desired path
-        $file->storeAs($customPath, $fileName, 'public');
-    
-        $packages = implode(',', $request->input('package'));
-        
+        $file->storeAs($customPath, $fileName, 'public');        
        
         $download = new Download;
         $download->description = $request->description;
-        $download->package = $packages;
+        $download->package = $request->input('package', []);
         $download->name = $request->name;
-        $download->allow_guest = $request->allow_guest;
+        $download->allow_guest = $request->input('allow_guest');
         $download->file_path = $fileName;
         $download->save();
 
@@ -86,9 +80,9 @@ class DownloadsController extends Controller
     
         $request->validate([
             'description' => 'required',
-            'package' => 'required',
+            'package' => 'nullable',
             'name' => 'required',
-            'allow_guest' => '', // Make sure 'allow_guest' is treated as a boolean
+            'allow_guest' => 'boolean', // Make sure 'allow_guest' is treated as a boolean
             'file' => 'file|mimes:zip|max:2048',
         ]);
     
@@ -96,12 +90,8 @@ class DownloadsController extends Controller
             $this->updateFile($request, $download);
         }
     
-       
-        // Use boolean() method to cast 'allow_guest' to boolean
-        $packages = implode(',', $request->input('package'));
-    
         $download->description = $request->description;
-        $download->package = $packages;
+        $download->package = $request->input('package', []);
         $download->name = $request->name;
         $download->allow_guest = $request->allow_guest;
     
