@@ -4,7 +4,7 @@ namespace Modules\Downloads\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use App\Models\Download;
+use Modules\Downloads\Entities\Download;
 use Illuminate\Support\Facades\Storage;
 
 class ClientDownloadsController extends Controller
