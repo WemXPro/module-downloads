@@ -33,8 +33,9 @@
 
 
                             <span class="flex items-center text-sm text-gray-500 sm:text-center dark:text-gray-400 mr-3">
-                                <i class='bx bxs-cloud-download mr-1'></i> 600 downloads
+                                <i class='bx bxs-cloud-download mr-1'></i> {{ $download->downloads_count }} downloads
                             </span>
+
                         </div>
                     </div>
 

@@ -19,8 +19,13 @@ class ClientDownloadsController extends Controller
     public function download($id)
     {
         $download = Download::findOrFail($id);
-        $filePath = storage_path('app/public/Database/Downloadfile/' . $download->file_path);
 
+        // if ($download->package && !Auth::user()->hasPackage($download->package)) {
+        //     return redirect()->back()->with('error', 'You do not have the required package to download this file.');
+        // }
+
+        $filePath = storage_path('app/public/Database/Downloadfile/' . $download->file_path);
+        $download->increment('downloads_count');
         return response()->download($filePath, $download->name);
     }
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('downloads', function (Blueprint $table) {
             $table->bigInteger('file_size')->after('file_path')->nullable();
+            $table->integer('downloads_count')->after('file_size')->default(0);
         });
     }
 

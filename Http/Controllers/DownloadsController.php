@@ -60,6 +60,7 @@ class DownloadsController extends Controller
         $download = Download::findOrFail($id);
         $filePath = storage_path('app/public/Database/Downloadfile/' . $download->file_path);
 
+        $download->increment('downloads_count');
         return response()->download($filePath, $download->name);
     }
 
