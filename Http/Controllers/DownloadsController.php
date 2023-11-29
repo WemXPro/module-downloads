@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller;
 use Modules\Downloads\Entities\Download;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
+use Nwidart\Modules\Facades\Module;
 
 class DownloadsController extends Controller
 {
@@ -33,12 +34,15 @@ class DownloadsController extends Controller
     
         $file = $request->file('file');
         $fileName = time() . '_' . $file->getClientOriginalExtension();
-        $modulePath = base_path('Modules/Downloads/');
-        $customPath = 'Database/Downloadfile';
-        $file->storeAs($customPath, $fileName, 'public');
-
+        
+        $module = Module::find('Downloads');
+        $modulepath = $module->getPath();
+        $modulename = $module->getName();
+           
+        $file->storeAs("$modulename/storage", $fileName,);
+    
         $fileSize = $file->getSize();
-
+    
         $download = new Download;
         $download->description = $request->description;
         $download->package = $request->input('package', []);
@@ -47,11 +51,9 @@ class DownloadsController extends Controller
         $download->file_path = $fileName;
         $download->file_size = $fileSize;
         $download->save();
-
     
         return redirect()->route('downloads.index')->with('success', 'Download created successfully.');
     }
-    
     public function download($id)
     {
         $download = Download::findOrFail($id);
