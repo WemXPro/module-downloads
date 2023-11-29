@@ -57,8 +57,11 @@
 
                             <div class="form-group">
                                 <label for="file">{{ __('File') }}</label>
-                                <input type="file" name="file" id="file" class="form-control-file">
-                                <small class="form-text text-muted">Please upload a ZIP file</small>
+                                <div class="custom-file">
+                                    <input type="file" name="file" id="file" class="custom-file-input">
+                                    <label class="custom-file-label" for="file">Choose file</label>
+                                    <small class="form-text text-muted">Please upload a ZIP file</small>
+                                </div>
                             </div>
 
 
