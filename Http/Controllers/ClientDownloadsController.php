@@ -16,20 +16,24 @@ class ClientDownloadsController extends Controller
         return view('downloads::client.download', compact('downloads'));
     }
 
-    public function download($id)
+    public function download(Download $download)
     {
-        $download = Download::findOrFail($id);
+        $filePath = storage_path('app/modules/downloads/' . $download->file_path);
 
-        if ($download->package && !Auth::user()->hasPackage($download->package)) {
-            return redirect()->back()->with('error', 'You do not have the required package to download this file.');
-        }
-
-        $filePath = storage_path('app/public/Database/Downloadfile/' . $download->file_path);
         if (!file_exists($filePath)) {
-            return redirect()->back()->with('error', 'The file does not exist.');
+            return redirect()->back()->withError("File in folder {$filePath} does not exists");
         }
+
+        if(!is_readable($filePath)) {
+            return redirect()->back()->withError("File is not readable, please ensure /storage has the correct 755 permissions");
+        }
+
+        if(!$download->canDownload()) {
+            return redirect()->back()->withError('You don\'t have any permissions to download this resource');
+        }
+
         $download->increment('downloads_count');
-        return response()->download($filePath, $download->name);
+        return response()->download($filePath, $download->name . '.zip', ['Content-Type' => 'application/zip']);
     }
 
     public static function humanFilesize($bytes, $decimals = 2)

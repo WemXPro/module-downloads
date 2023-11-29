@@ -47,8 +47,6 @@
                                 <small class="form-text text-muted"></small>
                             </div>
 
-
-
                             <div class="form-group">
                                 <label for="allow_guest">{{ __('Allow Guest') }}</label>
                                 <select name="allow_guest" id="allow_guest" class="form-control" required>
@@ -75,14 +73,4 @@
             </div>
         </div>
     </section>
-@endsection
-
-@section('css_libraries')
-    <link rel="stylesheet" href="{{ asset(AdminTheme::assets('modules/summernote/summernote-bs4.css')) }}" />
-    <link rel="stylesheet" href="{{ asset(AdminTheme::assets('modules/select2/dist/css/select2.min.css')) }}">
-@endsection
-
-@section('js_libraries')
-    <script src="{{ asset(AdminTheme::assets('modules/summernote/summernote-bs4.js')) }}"></script>
-    <script src="{{ asset(AdminTheme::assets('modules/select2/dist/js/select2.full.min.js')) }}"></script>
 @endsection

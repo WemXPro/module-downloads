@@ -31,31 +31,27 @@ class DownloadsController extends Controller
             'allow_guest' => 'boolean',
             'file' => 'required|file|mimes:zip',
         ]);
-    
-        $file = $request->file('file');
-        $fileName = time() . '_' . $file->getClientOriginalExtension();
+
+        if($request->input('allow_guest') AND !empty($request->input('package', []))) {
+            return redirect()->back()->withError('The allow guest field cannot be true if you also require a user to have a package.');
+        }
+
+        if ($request->hasFile('file')) {
+            $zipFile = $request->file('file');
+            $filename = time() . '.' . $zipFile->getClientOriginalExtension();
         
+            // Store in the "storage/app/modules/downloads" directory
+            Storage::disk('local')->putFileAs('modules/downloads', $zipFile, $filename);
+        }
 
-        // $module = Module::find('Downloads');
-        // $modulePath = $module->getPath();
-        // $moduleName = $module->getName();
-        // $moduleDirectory = $modulePath . '/Storage';                
-        // $file->storeAs($moduleDirectory, $fileName);
-
-
-        $modulePath = base_path('Modules/Downloads/');
-        $customPath = 'Database/Downloadfile';
-
-        $file->storeAs($customPath, $fileName, 'public');
-
-        $fileSize = $file->getSize();
+        $fileSize = $zipFile->getSize();
 
         $download = new Download;
         $download->description = $request->description;
         $download->package = $request->input('package', []);
         $download->name = $request->name;
         $download->allow_guest = $request->input('allow_guest');
-        $download->file_path = $fileName;
+        $download->file_path = $filename;
         $download->file_size = $fileSize;
         $download->save();
 
@@ -63,35 +59,47 @@ class DownloadsController extends Controller
         return redirect()->route('downloads.index')->with('success', 'Download created successfully.');
     }
 
-    public function download($id)
+    public function download(Download $download)
     {
-        $download = Download::findOrFail($id);
-        $filePath = storage_path('app/public/Database/Downloadfile/' . $download->file_path);
+        $filePath = storage_path('app/modules/downloads/' . $download->file_path);
 
-        $download->increment('downloads_count');
-        return response()->download($filePath, $download->name);
+        if (!file_exists($filePath)) {
+            return redirect()->back()->withError("File in folder {$filePath} does not exists");
+        }
+
+        if(!is_readable($filePath)) {
+            return redirect()->back()->withError("File is not readable, please ensure /storage has the correct 755 permissions");
+        }
+
+        if(!$download->canDownload()) {
+            return redirect()->back()->withError('You don\'t have any permissions to download this resource');
+        }
+
+        return response()->download($filePath, $download->name . '.zip', ['Content-Type' => 'application/zip']);
     }
 
-    public function edit($id)
+    public function edit(Download $download)
     {
-        $download = Download::findOrFail($id);
         return view('downloads::admin.edit', compact('download'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $download = Download::findOrFail($id);
-    
+    public function update(Request $request, Download $download)
+    {    
         $request->validate([
             'description' => 'required',
             'package' => 'nullable',
             'name' => 'required',
             'allow_guest' => 'boolean', // Make sure 'allow_guest' is treated as a boolean
-            'file' => 'file|mimes:zip|max:2048',
+            'file' => 'file|mimes:zip',
         ]);
+
+        if($request->input('allow_guest') AND !empty($request->input('package', []))) {
+            return redirect()->back()->withError('The allow guest field cannot be true if you also require a user to have a package.');
+        }
     
         if ($request->hasFile('file')) {
-            $this->updateFile($request, $download);
+            $zipFile = $request->file('file');
+            Storage::disk('local')->putFileAs('modules/downloads', $zipFile, $download->file_path);
         }
     
         $download->description = $request->description;
@@ -103,28 +111,11 @@ class DownloadsController extends Controller
     
         return redirect()->route('downloads.index')->with('success', 'Download updated successfully.');
     }
-    public function destroy($id)
+    public function destroy(Download $download)
     {
-        $download = Download::findOrFail($id);
         Storage::delete('downloads/' . $download->file_path);
         $download->delete();
 
         return redirect()->route('downloads.index')->with('success', 'Download deleted successfully.');
-    }
-
-    private function updateFile(Request $request, Download $download)
-    {
-        $file = $request->file('file');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        
-        $modulePath = base_path('Modules/Downloads/');
-        
-        $customPath = 'Database/Downloadfile';
-        
-        $file->storeAs($customPath, $fileName, 'public');
-    
-        Storage::disk('public')->delete($customPath . '/' . $download->file_path);
-    
-        $download->file_path = $fileName;
     }
 }
