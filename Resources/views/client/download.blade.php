@@ -25,9 +25,13 @@
                             <span class="flex items-center text-sm text-gray-500 sm:text-center dark:text-gray-400 mr-3">
                                 <i class='bx bxs-time mr-1'></i> {{ $download->created_at->diffForHumans() }}
                             </span>
+
                             <span class="flex items-center text-sm text-gray-500 sm:text-center dark:text-gray-400 mr-3">
-                                <i class='bx bxs-file-archive mr-1'></i> 5.6 MB
+                                <i class='bx bxs-file-archive mr-1'></i>
+                                {{ Modules\Downloads\Http\Controllers\ClientDownloadsController::humanFilesize($download->file_size) }}
                             </span>
+
+
                             <span class="flex items-center text-sm text-gray-500 sm:text-center dark:text-gray-400 mr-3">
                                 <i class='bx bxs-cloud-download mr-1'></i> 600 downloads
                             </span>

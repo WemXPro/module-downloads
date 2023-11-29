@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Downloads\Entities\Download;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 class DownloadsController extends Controller
 {
@@ -36,14 +37,15 @@ class DownloadsController extends Controller
         $customPath = 'Database/Downloadfile';
         $file->storeAs($customPath, $fileName, 'public');
 
-        
-       
+        $fileSize = $file->getSize();
+
         $download = new Download;
         $download->description = $request->description;
         $download->package = $request->input('package', []);
         $download->name = $request->name;
         $download->allow_guest = $request->input('allow_guest');
         $download->file_path = $fileName;
+        $download->file_size = $fileSize;
         $download->save();
 
     

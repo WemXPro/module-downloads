@@ -15,7 +15,7 @@ return [
             [
                 'name' => 'Downloads',
                 'icon' => '<i class="bx bxs-cloud-download"></i>',
-                'href' => 'client/downloads',
+                'href' => '/downloads',
                 'style' => '',
             ],
             // ... add more menu items

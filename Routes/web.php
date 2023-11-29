@@ -21,9 +21,9 @@ Route::prefix('admin/downloads')->group(function () {
     Route::delete('destroy/{id}', 'DownloadsController@destroy')->name('downloads.destroy');
 });
 
-Route::prefix('client')->group(function() {
+
     Route::get('downloads', 'ClientDownloadsController@index')->name('client.downloads');
     Route::get('downloads/{id}/download', 'ClientDownloadsController@download')->name('downloads.client.download');
-});
+
 
     
