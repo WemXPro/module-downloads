@@ -36,11 +36,16 @@ class DownloadsController extends Controller
         $fileName = time() . '_' . $file->getClientOriginalExtension();
         
         $module = Module::find('Downloads');
-        $modulepath = $module->getPath();
-        $modulename = $module->getName();
-           
-        $file->storeAs("$modulename/storage", $fileName,);
-    
+        $modulePath = $module->getPath();
+        $moduleName = $module->getName();
+        
+        
+        $moduleDirectory = $modulePath . '/Storage';        
+     
+        $fileName = time() . '_' . $file->getClientOriginalExtension();
+        
+        $file->storeAs($moduleDirectory, $fileName);
+        
         $fileSize = $file->getSize();
     
         $download = new Download;
