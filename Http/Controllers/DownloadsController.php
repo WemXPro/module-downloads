@@ -52,9 +52,6 @@ class DownloadsController extends Controller
         return redirect()->route('downloads.index')->with('success', 'Download created successfully.');
     }
     
-    
-    
-
     public function download($id)
     {
         $download = Download::findOrFail($id);
