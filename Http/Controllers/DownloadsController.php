@@ -35,19 +35,21 @@ class DownloadsController extends Controller
         $file = $request->file('file');
         $fileName = time() . '_' . $file->getClientOriginalExtension();
         
-        $module = Module::find('Downloads');
-        $modulePath = $module->getPath();
-        $moduleName = $module->getName();
-        
-        
-        $moduleDirectory = $modulePath . '/Storage';        
-     
-        $fileName = time() . '_' . $file->getClientOriginalExtension();
-        
-        $file->storeAs($moduleDirectory, $fileName);
-        
+
+        // $module = Module::find('Downloads');
+        // $modulePath = $module->getPath();
+        // $moduleName = $module->getName();
+        // $moduleDirectory = $modulePath . '/Storage';                
+        // $file->storeAs($moduleDirectory, $fileName);
+
+
+        $modulePath = base_path('Modules/Downloads/');
+        $customPath = 'Database/Downloadfile';
+
+        $file->storeAs($customPath, $fileName, 'public');
+
         $fileSize = $file->getSize();
-    
+
         $download = new Download;
         $download->description = $request->description;
         $download->package = $request->input('package', []);
@@ -56,9 +58,11 @@ class DownloadsController extends Controller
         $download->file_path = $fileName;
         $download->file_size = $fileSize;
         $download->save();
+
     
         return redirect()->route('downloads.index')->with('success', 'Download created successfully.');
     }
+
     public function download($id)
     {
         $download = Download::findOrFail($id);

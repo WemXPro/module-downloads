@@ -20,11 +20,14 @@ class ClientDownloadsController extends Controller
     {
         $download = Download::findOrFail($id);
 
-        // if ($download->package && !Auth::user()->hasPackage($download->package)) {
-        //     return redirect()->back()->with('error', 'You do not have the required package to download this file.');
-        // }
+        if ($download->package && !Auth::user()->hasPackage($download->package)) {
+            return redirect()->back()->with('error', 'You do not have the required package to download this file.');
+        }
 
         $filePath = storage_path('app/public/Database/Downloadfile/' . $download->file_path);
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'The file does not exist.');
+        }
         $download->increment('downloads_count');
         return response()->download($filePath, $download->name);
     }
