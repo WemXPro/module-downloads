@@ -17,6 +17,11 @@ class Download extends Model
     {
         $authUser = auth()->user();
     
+         // If the user is not logged in, disallow the download
+         if (!$authUser) {
+            return false;
+        }
+
         // If the user is an admin, allow the download
         if ($authUser && $authUser->is_admin()) {
             return true;
@@ -25,12 +30,7 @@ class Download extends Model
         // If download allows guests, allow the download
         if ($this->allow_guest) {
             return true;
-        }
-    
-        // If the user is not logged in, disallow the download
-        if (!$authUser) {
-            return false;
-        }
+        }       
     
         // If the download requires the user to be logged in and has no package requirements, allow the download
         if (empty($this->package)) {

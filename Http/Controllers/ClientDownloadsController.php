@@ -12,7 +12,7 @@ class ClientDownloadsController extends Controller
 {
     public function index()
     {
-        $downloads = Download::latest()->paginate(15);    
+        $downloads = Download::latest()->paginate(10);    
         return view('downloads::client.download', compact('downloads'));
     }
 

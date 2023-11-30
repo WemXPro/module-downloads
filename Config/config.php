@@ -25,7 +25,7 @@ return [
             [
                 'name' => 'Downloads',
                 'icon' => '<i class="bx bx-link"></i><i class="fas fa-solid fa-download"></i>',
-                'href' => '/admin/downloads/index', // Adjust the route as needed
+                'href' => '/admin/downloads/', // Adjust the route as needed
                 'style' => '',
             ],
             // ... add more menu items
