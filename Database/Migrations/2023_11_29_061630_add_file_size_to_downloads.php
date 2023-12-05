@@ -23,7 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('downloads', function (Blueprint $table) {
-            //
+            $table->dropColumn('file_size');
+            $table->dropColumn('downloads_count');
         });
     }
+
 };
