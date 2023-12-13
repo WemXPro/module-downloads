@@ -38,7 +38,7 @@ class Download extends Model
         }
     
         // If the download requires a specific package, check if the user has it
-        if (!empty($this->package) && $authUser->orders()->whereIn('package_id', $this->package)->exists()) {
+        if (!empty($this->package) && $authUser->orders()->whereIn('package_id', $this->package)->where('status', 'active')->exists()) {
             return true;
         }
     
