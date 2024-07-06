@@ -3,7 +3,7 @@
 @section('keywords', 'WemX Dashboard, WemX Panel')
 
 @section('container')
-    <section class="bg-white dark:bg-gray-900">
+    <section>
         <div class="">
             <div>
                 <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Downloads</h2>
