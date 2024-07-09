@@ -10,8 +10,7 @@ return [
 
     'elements' => [
 
-        'main_menu' =>
-        [
+        'main_menu' => [
             [
                 'name' => 'Downloads',
                 'icon' => '<i class="bx bxs-cloud-download"></i>',
@@ -21,8 +20,7 @@ return [
             // ... add more menu items
         ],
 
-        'admin_menu' => 
-        [
+        'admin_menu' => [
             [
                 'name' => 'Downloads',
                 'icon' => '<i class="fas fa-solid fa-download"></i>',

@@ -23,8 +23,7 @@ Route::prefix('admin/downloads')->as('downloads.')->middleware('permission')->gr
 
 });
 
-Route::as('downloads.client.')->group(function(){
+Route::as('downloads.client.')->group(function (){
     Route::get('/downloads', 'ClientDownloadsController@index')->name('downloads');
     Route::get('/downloads/{download}/download', 'ClientDownloadsController@download')->name('download');
 });
-

@@ -1,19 +1,18 @@
 <?php
+
 namespace Modules\Downloads\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Downloads\Entities\Download;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
-use Nwidart\Modules\Facades\Module;
+use Modules\Downloads\Entities\Download;
 
 class DownloadsController extends Controller
 {
     public function index()
     {
         $downloads = Download::paginate(10);
+
         return view('downloads::admin.index', compact('downloads'));
     }
 
@@ -32,14 +31,14 @@ class DownloadsController extends Controller
             'file' => 'required|file|mimes:zip',
         ]);
 
-        if($request->input('allow_guest') AND !empty($request->input('package', []))) {
+        if ($request->input('allow_guest') and !empty($request->input('package', []))) {
             return redirect()->back()->withError('The allow guest field cannot be true if you also require a user to have a package.');
         }
 
         if ($request->hasFile('file')) {
             $zipFile = $request->file('file');
             $filename = time() . '.' . $zipFile->getClientOriginalExtension();
-        
+
             // Store in the "storage/app/modules/downloads" directory
             Storage::disk('local')->putFileAs('modules/downloads', $zipFile, $filename);
         }
@@ -55,7 +54,6 @@ class DownloadsController extends Controller
         $download->file_size = $fileSize;
         $download->save();
 
-    
         return redirect()->route('downloads.index')->with('success', 'Download created successfully.');
     }
 
@@ -67,11 +65,11 @@ class DownloadsController extends Controller
             return redirect()->back()->withError("File in folder {$filePath} does not exists");
         }
 
-        if(!is_readable($filePath)) {
-            return redirect()->back()->withError("File is not readable, please ensure /storage has the correct 755 permissions");
+        if (!is_readable($filePath)) {
+            return redirect()->back()->withError('File is not readable, please ensure /storage has the correct 755 permissions');
         }
 
-        if(!$download->canDownload()) {
+        if (!$download->canDownload()) {
             return redirect()->back()->withError('You don\'t have any permissions to download this resource');
         }
 
@@ -84,7 +82,7 @@ class DownloadsController extends Controller
     }
 
     public function update(Request $request, Download $download)
-    {    
+    {
         $request->validate([
             'description' => 'required',
             'package' => 'nullable',
@@ -93,24 +91,25 @@ class DownloadsController extends Controller
             'file' => 'file|mimes:zip',
         ]);
 
-        if($request->input('allow_guest') AND !empty($request->input('package', []))) {
+        if ($request->input('allow_guest') and !empty($request->input('package', []))) {
             return redirect()->back()->withError('The allow guest field cannot be true if you also require a user to have a package.');
         }
-    
+
         if ($request->hasFile('file')) {
             $zipFile = $request->file('file');
             Storage::disk('local')->putFileAs('modules/downloads', $zipFile, $download->file_path);
         }
-    
+
         $download->description = $request->description;
         $download->package = $request->input('package', []);
         $download->name = $request->name;
         $download->allow_guest = $request->allow_guest;
-    
+
         $download->save();
-    
+
         return redirect()->route('downloads.index')->with('success', 'Download updated successfully.');
     }
+
     public function destroy(Download $download)
     {
         Storage::delete('downloads/' . $download->file_path);
