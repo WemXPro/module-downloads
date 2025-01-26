@@ -1,16 +1,16 @@
 {
     "name": "Downloads",
-    "alias": "downloads",
+    "type": "module",
     "description": "Downloads module",
+    "version": "1.0.0",
+    "author": "WemX",
+    "alias": "downloads",
     "keywords": [],
     "priority": 0,
     "providers": [
         "Modules\\Downloads\\Providers\\DownloadsServiceProvider"
     ],
     "files": [],
-    "type": "module",
     "icon": "https://imgur.png",
-    "author": "WemX",
-    "version": "1.0.0",
     "wemx_version": "1.0.0"
 }
